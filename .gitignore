@@ -22,3 +22,6 @@ vite.config.ts.timestamp-*
 
 # Database
 surreal-data/
+
+# Misc
+restore.py
