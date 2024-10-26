@@ -9,16 +9,37 @@
 	import '@schedule-x/theme-default/dist/index.css';
 	// custom
 	import AddEventModal from '$lib/components/AddEventModal.svelte';
+	import ViewEventModal from '$lib/components/ViewEventModal.svelte';
 	import { formattedDatetime } from '$lib';
+
+	// States
 	const { data } = $props();
 	const events = $state(data.events) as CalendarEvent[];
+
+	/** Selected Datetime, for AddEventModal */
+	let selectedDateTime: string = $state('');
+
+	/** AddEventModal modal open state */
+	let eventModalOpen: boolean = $state(false);
+
+	/** ViewEventModal modal open state */
+	let viewEventOpen: boolean = $state(false);
+
+	/** Selected Event, for ViewEventModal */
+	let selectedEvent: CalendarEvent | null = $state(null);
+
+	// Effects
+	$effect(() => {
+		// console.log('eventModalOpen', eventModalOpen); //! DEBUG
+		console.log('viewEventOpen', viewEventOpen); //! DEBUG
+		// console.log('selectedDateTime', selectedDateTime); //! DEBUG
+	});
 
 	function loadEvents() {
 		calendarApp.events.set(events);
 	}
 
 	const calendarApp = createCalendar({
-		// views: [createViewDay(), createViewWeek()],
 		views: [createViewDay(), createViewWeek(), createViewMonthAgenda(), createViewMonthGrid()],
 		plugins: [createCurrentTimePlugin({ fullWeekWidth: false }), createEventsServicePlugin()],
 		isDark: true,
@@ -33,7 +54,9 @@
 		events: [],
 		callbacks: {
 			onEventClick: (event) => {
-				console.log(event);
+				console.log(event); //! DEBUG
+				viewEventOpen = true;
+				selectedEvent = event;
 				// alert(event.title);
 			},
 			onClickDate: (data) => {
@@ -50,13 +73,6 @@
 				loadEvents();
 			}
 		}
-	});
-
-	let selectedDateTime: string = $state('');
-	let eventModalOpen: boolean = $state(false);
-	$effect(() => {
-		console.log('eventModalOpen', eventModalOpen);
-		// console.log('selectedDateTime', selectedDateTime);
 	});
 
 	// add new event
@@ -104,6 +120,8 @@
 	{selectedDateTime}
 	saveAction={() => addEvent(selectedDateTime)}
 />
+
+<ViewEventModal data={selectedEvent} bind:open={viewEventOpen} />
 
 <style>
 	:root {

@@ -1,7 +1,3 @@
 {
-    "cSpell.words": [
-        "datetime",
-        "jsonify",
-        "surrealdb"
-    ]
+	"cSpell.words": ["datetime", "jsonify", "surrealdb"]
 }
