@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
+	import TimerSvg from './ui/svg/timerSvg.svelte';
 	import type { CalendarEvent } from '@schedule-x/calendar';
 	import { Button } from '$lib/components/ui/button';
-	import TimerSvg from './ui/svg/timerSvg.svelte';
 	import { splitDatetime } from '$lib';
 
 	type Props = {
@@ -13,11 +13,13 @@
 	let { open = $bindable(), ...props }: Props = $props();
 	let startTime: string = $state('');
 	let endTime: string = $state('');
+	let title: string = $state('');
 
 	/** toggled when any input is changed */
 	let changed: boolean = $state(false);
 
 	$effect.pre(() => {
+		title = props.data?.title || '';
 		if (props.data?.start) {
 			startTime = splitDatetime(props.data.start).time;
 		}
@@ -35,8 +37,8 @@
 	});
 
 	const editEvent = async () => {
-		let start = String(props.data?.start).split(' ')[0].trim();
-		let end = String(props.data?.end).split(' ')[0].trim();
+		let start = splitDatetime(props.data?.start!).date;
+		let end = splitDatetime(props.data?.end!).date;
 		const response = await fetch('/api/edit-event', {
 			method: 'POST',
 			headers: {
@@ -44,6 +46,7 @@
 			},
 			body: JSON.stringify({
 				id: props.data?.id,
+				title: title,
 				start: `${start} ${startTime}`,
 				end: `${end} ${endTime}`
 			})
@@ -86,7 +89,22 @@
 				{props.data?.description}
 			</Dialog.Description>
 		</Dialog.Header>
-		<!-- <pre class="text-sm">{JSON.stringify(props.data, null, 2)}</pre> -->
+		<div>
+			<label for="title" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+				>Title</label
+			>
+			<input
+				class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm leading-none text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+				type="text"
+				id="title"
+				placeholder="Title"
+				bind:value={title}
+				oninput={(e) => {
+					title = (e.target as HTMLInputElement).value;
+					changed = true;
+				}}
+			/>
+		</div>
 		<section class="grid w-full grid-cols-2 gap-4">
 			<div>
 				<label for="start-time" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
