@@ -1,5 +1,11 @@
 // place files you want to import through the `$lib` alias in this folder.
 
+/**
+ * Format a datetime in ms to a string in the format of 'YYYY-MM-DD HH:MM'.
+ *
+ * @param datetime - The datetime in ms to format.
+ * @returns The formatted datetime string.
+ */
 export function formattedDatetime(datetime: number) {
 	const d = new Date(datetime);
 	const year = d.getFullYear();
@@ -8,4 +14,20 @@ export function formattedDatetime(datetime: number) {
 	const hour = d.getHours();
 	const minute = d.getMinutes();
 	return `${year}-${month}-${day} ${hour < 10 ? `0${hour}` : hour}:${minute < 10 ? `0${minute}` : minute}`;
+}
+
+/**
+ * Splits a datetime string into separate date and time components.
+ *
+ * @param datetime - A string representing a datetime in the format "YYYY-MM-DD HH:MM".
+ * @returns An object containing the `date` and `time` as separate strings.
+ */
+export function splitDatetime(datetime: string) {
+	// check if datetime is in format "YYYY-MM-DD HH:MM"
+	if (/\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(datetime)) {
+		const date = String(datetime).split(' ')[0].trim();
+		const time = String(datetime).split(' ')[1].trim();
+		return { date, time };
+	}
+	return { date: '', time: '' };
 }

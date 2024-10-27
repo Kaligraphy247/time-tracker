@@ -10,7 +10,6 @@
 	// custom
 	import AddEventModal from '$lib/components/AddEventModal.svelte';
 	import ViewEventModal from '$lib/components/ViewEventModal.svelte';
-	import { formattedDatetime } from '$lib';
 
 	// States
 	const { data } = $props();
@@ -27,13 +26,6 @@
 
 	/** Selected Event, for ViewEventModal */
 	let selectedEvent: CalendarEvent | null = $state(null);
-
-	// Effects
-	$effect(() => {
-		// console.log('eventModalOpen', eventModalOpen); //! DEBUG
-		console.log('viewEventOpen', viewEventOpen); //! DEBUG
-		// console.log('selectedDateTime', selectedDateTime); //! DEBUG
-	});
 
 	function loadEvents() {
 		calendarApp.events.set(events);
@@ -74,54 +66,17 @@
 			}
 		}
 	});
-
-	// add new event
-	const addEvent = async (start: string) => {
-		let selectedDate = Date.parse(start);
-		let endDate = selectedDate + 1000 * 60 * 60 * 4;
-		console.log('selectedDate', selectedDate, endDate);
-
-		const newEvent = {
-			id: String(crypto.randomUUID()),
-			title: 'New event with DateTime',
-			start: formattedDatetime(selectedDate),
-			end: formattedDatetime(endDate),
-			createdAt: Date.now() / 1000
-		};
-
-		console.log('newEvent', newEvent);
-		events.push(newEvent);
-		calendarApp.events.add(newEvent);
-
-		// persist in db
-		const response = await fetch('/api/add-event', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(newEvent)
-		});
-
-		if (!response.ok) {
-			console.error('Error:', response.statusText);
-			alert('Error: ' + response.statusText);
-			return;
-		}
-		alert('Event added successfully!');
-		eventModalOpen = !eventModalOpen;
-	};
 </script>
 
+<!-- Markup -->
 <div class="sx-svelte-calendar-wrapper">
 	<ScheduleXCalendar {calendarApp} />
 </div>
-<AddEventModal
-	bind:open={eventModalOpen}
-	{selectedDateTime}
-	saveAction={() => addEvent(selectedDateTime)}
-/>
+<AddEventModal bind:open={eventModalOpen} {selectedDateTime} />
 
 <ViewEventModal data={selectedEvent} bind:open={viewEventOpen} />
+
+<!-- End Markup -->
 
 <style>
 	:root {
