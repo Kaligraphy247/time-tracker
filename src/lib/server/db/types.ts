@@ -7,6 +7,7 @@ export type Event = {
 	location: string | undefined;
 	start: string;
 	people: string[] | undefined | any[];
+	createdAt: number | undefined;
 	_options:
 		| {
 				disableDND: boolean | undefined;

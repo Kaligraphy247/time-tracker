@@ -31,3 +31,41 @@ export function splitDatetime(datetime: string) {
 	}
 	return { date: '', time: '' };
 }
+
+
+
+/**
+ * Calculate the total time between two datetime strings in hours, minutes, and ms.
+ *
+ * @param start - A string representing a datetime in the format "YYYY-MM-DD HH:MM".
+ * @param end - A string representing a datetime in the format "YYYY-MM-DD HH:MM".
+ * @returns An object with `hours`, `minutes`, and `totalTime` properties.
+ */
+export function getElapsedTime(start: string, end: string) {
+	const totalTime = Date.parse(end) - Date.parse(start);
+	const hours = Math.floor(totalTime / (1000 * 60 * 60));
+	const minutes = Math.floor((totalTime % (1000 * 60 * 60)) / (1000 * 60));
+	return { hours, minutes, totalTime };
+}
+
+
+/**
+ * Converts a timestamp in milliseconds to hours.
+ *
+ * @param timestamp - The timestamp in milliseconds.
+ * @returns The number of hours in the given timestamp.
+ */
+export function getHours(timestamp: number) {
+	return Math.floor(timestamp / (1000 * 60 * 60));
+}
+
+
+/**
+ * Converts a timestamp in milliseconds to minutes.
+ *
+ * @param timestamp - The timestamp in milliseconds.
+ * @returns The number of minutes in the given timestamp.
+ */
+export function getMinutes(timestamp: number) {
+	return Math.floor((timestamp % (1000 * 60 * 60)) / (1000 * 60));
+}
