@@ -41,12 +41,12 @@
 			end: '22:00'
 		},
 		weekOptions: {
-			gridHeight: 900
+			// gridHeight: 900
 		},
 		events: [],
 		callbacks: {
 			onEventClick: (event) => {
-				console.log(event); //! DEBUG
+				// console.log(event); //! DEBUG
 				viewEventOpen = true;
 				selectedEvent = event;
 				// alert(event.title);

@@ -39,17 +39,18 @@
 	const editEvent = async () => {
 		let start = splitDatetime(props.data?.start!).date;
 		let end = splitDatetime(props.data?.end!).date;
+		const body = {
+			id: props.data?.id,
+			title: title,
+			start: new Date(`${start} ${startTime}`).getTime(),
+			end: new Date(`${end} ${endTime}`).getTime(),
+		}
 		const response = await fetch('/api/edit-event', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({
-				id: props.data?.id,
-				title: title,
-				start: `${start} ${startTime}`,
-				end: `${end} ${endTime}`
-			})
+			body: JSON.stringify(body)
 		});
 
 		if (!response.ok) {

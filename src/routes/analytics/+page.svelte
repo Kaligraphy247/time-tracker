@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getElapsedTime, getHours, getMinutes, splitDatetime } from '$lib';
+	const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 	// States
 	const { data } = $props();
@@ -27,16 +28,24 @@
 	<p class="text-3xl font-bold">{getHours(totalTime)}h</p>
 	<p class="text-3xl font-bold">{getMinutes(totalTime)}m</p>
 </div>
-<ul class="space-y-4">
+<ul class="space-y-4 mx-4">
 	{#if analytics.length !== 0}
 		{#each analytics as event}
 			<li class="max-w-md rounded-xl border-0 py-4">
 				<div>
-					<p class="text-2xl font-semibold">{event.title} <span class="text-sm font-medium">{splitDatetime(event.start).date}</span></p>
+					<p class="text-2xl font-semibold">
+						{event.title} <span class="text-sm font-medium">{splitDatetime(event.start).date}</span>
+					</p>
+					<p>{event.description}</p>
 					<div class="flex justify-start space-x-4 font-sans text-xl font-semibold">
 						<p>{event.hours}h</p>
 						<p>{event.minutes}m</p>
 					</div>
+					<p class="text-sm">
+						<span>{days[new Date(splitDatetime(event.start).date).getDay()]}</span>
+						<span class="font-mono">From {event.start}</span>
+						<span class="font-mono">to {event.end}</span>
+					</p>
 					<p class="font-mono text-xs">
 						created at: {event.createdAt ? new Date(event.createdAt * 1000).toLocaleString() : ''}
 					</p>
@@ -45,3 +54,14 @@
 		{/each}
 	{/if}
 </ul>
+
+
+<style>
+	@media print {
+		@page {
+			/* size: landscape; */
+			color: black;
+			
+		}
+	}
+</style>

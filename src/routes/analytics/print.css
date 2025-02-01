@@ -1,0 +1,76 @@
+/* Print Media Query */
+@media print {
+    /* General Styles */
+    body {
+        font-size: 12pt; /* Set base font size */
+        line-height: 1.5; /* Increase line height for readability */
+        color: #000; /* Use black text color for all printed content */
+        background: none; /* Remove background colors and images */
+    }
+    
+    /* Remove unnecessary elements */
+    .no-print {
+        display: none; /* Hide elements like navigation bars, footers, etc. */
+    }
+    
+    /* Style headers and footers */
+    header, footer {
+        display: block; /* Ensure header and footer are printed */
+        text-align: center;
+        font-size: 14pt;
+        margin: 10px 0;
+    }
+
+    /* Page breaks */
+    /* h1, h2, h3, h4, h5 { */
+    h1 {
+        page-break-after: avoid; /* Avoid page breaks after headings */
+        page-break-inside: avoid; /* Avoid page breaks inside headings */
+    }
+    
+    /* Tables */
+    table {
+        width: 100%; /* Full-width tables */
+        border-collapse: collapse; /* Merge borders */
+    }
+    
+    th, td {
+        border: 1px solid #000; /* Outline cells */
+        padding: 8px; /* Space around text in table cells */
+        text-align: left; /* Left align text in cells */
+    }
+
+    /* Bullet points */
+    ul, ol {
+        margin: 0 0 1em 20px; /* Margin for lists */
+    }
+
+    /* Links */
+    a {
+        color: #000; /* Change link color to black */
+        text-decoration: none; /* Remove underline from links */
+    }
+
+    /* Images */
+    img {
+        max-width: 100%; /* Make images responsive */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    /* Other styling */
+    p {
+        margin: 0 0 1em; /* Space between paragraphs */
+    }
+    
+    /* Additional styles for specific classes */
+    .highlight {
+        background: #f0f0f0; /* Optional background for highlights */
+        color: #000; /* Ensuring text color is readable */
+    }
+
+    /* Avoid margin collapse */
+    @page {
+        margin: 1in; /* Set margins for printed pages */
+        size: auto; /* Auto size */
+    }
+}

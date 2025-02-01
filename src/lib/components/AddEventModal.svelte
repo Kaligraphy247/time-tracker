@@ -36,13 +36,17 @@
 		formNewEvent.id = String(crypto.randomUUID());
 		formNewEvent.createdAt = Date.now() / 1000;
 		console.log(formNewEvent);
-
+		const body = {
+			...formNewEvent,
+			start: new Date(formNewEvent.start).getTime(),
+			end: new Date(formNewEvent.end).getTime()
+		}
 		const response = await fetch('/api/add-event', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(formNewEvent)
+			body: JSON.stringify(body)
 		});
 
 		if (!response.ok) {

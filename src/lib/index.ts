@@ -13,7 +13,9 @@ export function formattedDatetime(datetime: number) {
 	const day = d.getDate();
 	const hour = d.getHours();
 	const minute = d.getMinutes();
-	return `${year}-${month}-${day} ${hour < 10 ? `0${hour}` : hour}:${minute < 10 ? `0${minute}` : minute}`;
+	const date = `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`
+	const time = `${hour < 10 ? `0${hour}` : hour}:${minute < 10 ? `0${minute}` : minute}`;
+	return `${date} ${time}`
 }
 
 /**
