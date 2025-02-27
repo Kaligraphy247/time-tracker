@@ -15,8 +15,8 @@ export async function editEvent(event: Event): Promise<boolean> {
 	const stmt = `
 	UPDATE events SET
 		title = '${event.title}',
-		start = '${event.start}',
-		end = '${event.end}'
+		start = ${event.start},
+		end = ${event.end}
 	WHERE id = ${event.id};
 	`;
 	const result = await db.query(stmt);
